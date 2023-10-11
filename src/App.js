@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import './App.css'
-import Login from './components/Login'
-import { TodoItem } from './components/TodoItem'
-import Logout from './components/Logout'
 import { Button, Modal } from 'react-bootstrap'
-import { NewTodoForm } from './components/NewTodoForm'
+import Login from './components/Login'
+import TodoItem from './components/TodoItem'
+import Logout from './components/Logout'
+import NewTodoForm from './components/NewTodoForm'
 
 const initialToDoLists = [
     {
@@ -19,7 +19,7 @@ const initialToDoLists = [
         title: 'close the door',
         description: '',
         author: 'Default',
-        dateCreated: new Date('2023-10-9T13:50:21.817Z'),
+        dateCreated: new Date('2023-10-09T13:50:21.817Z'),
         complete: true,
         dateCompleted: new Date('2023-10-10T21:50:21.817Z'),
     },
@@ -27,7 +27,7 @@ const initialToDoLists = [
         title: 'submit homework',
         description: 'csc436',
         author: 'Default',
-        dateCreated: new Date('2023-10-8T13:50:21.817Z'),
+        dateCreated: new Date('2023-10-08T13:50:21.817Z'),
         complete: false,
         dateCompleted: '',
     },
@@ -55,7 +55,7 @@ function App() {
 
     const onChangeComplete = useCallback(
         ({ title, complete, dateCompleted }) => {
-            const index = todoList.findIndex((td) => td.title == title)
+            const index = todoList.findIndex((td) => td.title === title)
             const newList = [...todoList]
             newList[index] = { ...newList[index], complete, dateCompleted }
             setTodoList(newList)
