@@ -5,33 +5,33 @@ function formatDateString(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-  // const hours = String(date.getHours()).padStart(2, '0');
-  // const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
   // const seconds = String(date.getSeconds()).padStart(2, '0');
 
-  return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
 export const TodoItem = (props) => {
   const { title, description, author, dateCreated, complete, dateCompleted } = props.item
-  const [checked, setChecked] = useState(complete)
-  const [completedAt, setCompletedAt] = useState(dateCompleted)
 
   const handleChange = useCallback(() => {
-    if (checked) {
-      setCompletedAt(null)
+    const newData = { title }
+    if (complete) {
+      newData.dateCompleted = null
     } else {
-      setCompletedAt(new Date())
+      newData.dateCompleted = new Date()
     }
-    setChecked(!checked)
-  }, [checked])
+    newData.complete = !complete
+    props.onChangeComplete(newData)
+  }, [complete, props.onChangeComplete, title])
 
   return (
     <div className='item-wrapper'>
-      <div className='left' data-checked={checked}>
+      <div className='left' data-checked={complete}>
       <input
           type="checkbox"
-          checked={checked}
+          checked={complete}
           onChange={handleChange}
           className='checkbox'
         />
@@ -39,7 +39,7 @@ export const TodoItem = (props) => {
       </div>
       <div className='right'>
         <div>Created by {author} at {formatDateString(dateCreated)}</div>
-        {completedAt ? <div>Completed at: {formatDateString(completedAt)}</div> : null}
+        {dateCompleted ? <div>Completed at: {formatDateString(dateCompleted)}</div> : null}
       </div>
     </div>
   )

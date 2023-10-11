@@ -13,21 +13,21 @@ const initialToDoLists = [
         author: 'Default',
         dateCreated: new Date('2020-05-12T23:50:21.817Z'),
         complete: true,
-        dateCompleted: new Date('2020-05-14T23:50:21.817Z'),
+        dateCompleted: new Date('2020-05-14T13:50:21.817Z'),
     },
     {
         title: 'close the door',
         description: '',
         author: 'Default',
-        dateCreated: new Date('2023-10-10T13:50:21.817Z'),
+        dateCreated: new Date('2023-10-9T13:50:21.817Z'),
         complete: true,
-        dateCompleted: new Date('2023-10-10T23:50:21.817Z'),
+        dateCompleted: new Date('2023-10-10T21:50:21.817Z'),
     },
     {
         title: 'submit homework',
         description: 'csc436',
         author: 'Default',
-        dateCreated: new Date('2023-10-10T13:50:21.817Z'),
+        dateCreated: new Date('2023-10-8T13:50:21.817Z'),
         complete: false,
         dateCompleted: '',
     },
@@ -53,6 +53,16 @@ function App() {
         setTodoList([])
     }, [])
 
+    const onChangeComplete = useCallback(
+        ({ title, complete, dateCompleted }) => {
+            const index = todoList.findIndex((td) => td.title == title)
+            const newList = [...todoList]
+            newList[index] = { ...newList[index], complete, dateCompleted }
+            setTodoList(newList)
+        },
+        [todoList]
+    )
+
     const onSubmit = useCallback(
         (newData) => {
             handleClose()
@@ -74,7 +84,11 @@ function App() {
             </div>
             <div className="todo-list">
                 {todoList.map((item) => (
-                    <TodoItem item={item} key={item.title} />
+                    <TodoItem
+                        item={item}
+                        key={item.title}
+                        onChangeComplete={onChangeComplete}
+                    />
                 ))}
             </div>
             <Modal show={show} onHide={handleClose}>
