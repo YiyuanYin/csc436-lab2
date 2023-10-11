@@ -19,9 +19,9 @@ export const TodoItem = (props) => {
 
   const handleChange = useCallback(() => {
     if (checked) {
-      setCompletedAt('')
+      setCompletedAt(null)
     } else {
-      setCompletedAt(formatDateString(new Date()))
+      setCompletedAt(new Date())
     }
     setChecked(!checked)
   }, [checked])
@@ -37,7 +37,10 @@ export const TodoItem = (props) => {
         />
         <div><span style={{ fontWeight: 600 }}>{title}</span>{description ? <span>({description})</span> : null}</div>
       </div>
-      {completedAt ? <div className='complete'>Completed at: {completedAt}</div> : null}
+      <div className='right'>
+        <div>Created by {author} at {formatDateString(dateCreated)}</div>
+        {completedAt ? <div>Completed at: {formatDateString(completedAt)}</div> : null}
+      </div>
     </div>
   )
 }
