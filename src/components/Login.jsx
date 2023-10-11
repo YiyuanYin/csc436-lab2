@@ -49,7 +49,7 @@ export default function Login(props) {
           <span className='click-text' onClick={() => setHasAccount(false)} variant="light"> Click here </span>
            to register
         </div>}
-        <Button variant="primary" disabled={!password || !name || (!hasAccount && !rPassword )} onClick={onClickSubmit}>Submit</Button>
+        <Button variant="primary" disabled={!password || !name || (!hasAccount && (!rPassword || (rPassword !== password)) )} onClick={onClickSubmit}>Submit</Button>
       </Form>
     </div>
   );
