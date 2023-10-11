@@ -1,0 +1,28 @@
+.item-wrapper {
+  border: 2px solid black;
+  height: 60px;
+  /* width: 400px; */
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.left[data-checked='true'] {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.complete {
+  font-size: 12px;
+}
