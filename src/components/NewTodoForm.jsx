@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function NewTodoForm({ onSubmit }) {
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-    })
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('');
 
     const onClickSubmit = useCallback(() => {
-        onSubmit({ ...formData, complete: false, dateCreated: new Date() })
-    }, [formData, onSubmit])
+        onSubmit({ title, description, complete: false, dateCreated: new Date(), id: uuidv4() })
+    }, [description, onSubmit, title])
 
     return (
         <form onSubmit={(e) => e.preventDefault()}>
@@ -16,9 +15,9 @@ export default function NewTodoForm({ onSubmit }) {
                 <label htmlFor="title">title:</label>
                 <input
                     type="text"
-                    value={formData.title}
+                    value={title}
                     onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
+                        setTitle(e.target.value)
                     }
                     id="title"
                 />
@@ -27,12 +26,9 @@ export default function NewTodoForm({ onSubmit }) {
                 <label htmlFor="description">description:</label>
                 <input
                     type="text"
-                    value={formData.description}
+                    value={description}
                     onChange={(e) =>
-                        setFormData({
-                            ...formData,
-                            description: e.target.value,
-                        })
+                        setDescription(e.target.value)
                     }
                     id="description"
                 />
@@ -40,7 +36,7 @@ export default function NewTodoForm({ onSubmit }) {
             <input
                 type="submit"
                 value="Submit"
-                disabled={!formData.title}
+                disabled={!title}
                 onClick={onClickSubmit}
             />
         </form>

@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useContext } from 'react'
+import { StateContext } from '../contexts';
 import './TodoItem.css'
+import { Button } from 'react-bootstrap';
 
 function formatDateString(date) {
     const year = date.getFullYear()
@@ -12,18 +14,22 @@ function formatDateString(date) {
 }
 
 function TodoItem(props) {
-    const { title, description, author, dateCreated, complete, dateCompleted } = props.item
+    const { title, description, dateCreated, complete, dateCompleted, id } = props.item
+    const { state, dispatch } = useContext(StateContext);
 
-    const handleChange = useCallback(() => {
-        const newData = { title }
-        if (complete) {
-            newData.dateCompleted = null
-        } else {
-            newData.dateCompleted = new Date()
-        }
-        newData.complete = !complete
-        props.onChangeComplete(newData)
-    }, [complete, props, title])
+    const handleToggleTodo = (todoId) => {
+        dispatch({
+            type: 'TOGGLE_TODO',
+            id: todoId,
+        })
+    }
+
+    const handleDeleteTodo = (todoId) => {
+        dispatch({
+            type: 'DELETE_TODO',
+            id: todoId,
+        })
+    }
 
     return (
         <div className="item-wrapper">
@@ -31,7 +37,7 @@ function TodoItem(props) {
                 <input
                     type="checkbox"
                     checked={complete}
-                    onChange={handleChange}
+                    onChange={() => handleToggleTodo(id)}
                     className="checkbox"
                 />
                 <div>
@@ -41,12 +47,13 @@ function TodoItem(props) {
             </div>
             <div className="right">
                 <div>
-                    Created by {author} at {formatDateString(dateCreated)}
+                    Created by {state.user || 'Default'} at {formatDateString(dateCreated)}
                 </div>
                 {dateCompleted ? (
                     <div>Completed at: {formatDateString(dateCompleted)}</div>
                 ) : null}
             </div>
+            <Button onClick={() => handleDeleteTodo(id)}>Delete</Button>
         </div>
     )
 }

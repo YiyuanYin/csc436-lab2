@@ -1,19 +1,20 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { StateContext } from '../contexts';
 import './Login.css'
 
-export default function Login(props) {
-    const { onSubmit } = props
+export default function Login() {
     const [hasAccount, setHasAccount] = useState(true)
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [rPassword, setRPassword] = useState('')
+    const { dispatch } = useContext(StateContext);
 
     const onClickSubmit = useCallback(() => {
         if (name && password) {
-            onSubmit(name)
+            dispatch({ type: "LOGIN", userName: name })
         }
-    }, [name, password, onSubmit])
+    }, [dispatch, name, password])
 
     return (
         <div className="login-wrapper">
