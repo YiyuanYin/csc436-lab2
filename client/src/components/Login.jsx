@@ -5,24 +5,24 @@ import './Login.css'
 
 export default function Login() {
     const [hasAccount, setHasAccount] = useState(true)
-    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rPassword, setRPassword] = useState('')
     const { dispatch } = useContext(StateContext);
 
     const onClickSubmit = useCallback(() => {
-        if (name && password) {
-            dispatch({ type: "LOGIN", userName: name })
+        if (email && password) {
+            dispatch({ type: "LOGIN", email })
         }
-    }, [dispatch, name, password])
+    }, [dispatch, email, password])
 
     return (
         <div className="login-wrapper">
             <Form>
-                <Form.Label htmlFor="inputPassword5">Username</Form.Label>
+                <Form.Label htmlFor="inputPassword5">Email</Form.Label>
                 <Form.Control
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     type="text"
                 />
                 <br />
@@ -67,7 +67,7 @@ export default function Login() {
                     variant="primary"
                     disabled={
                         !password ||
-                        !name ||
+                        !email ||
                         (!hasAccount && (!rPassword || rPassword !== password))
                     }
                     onClick={onClickSubmit}
