@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import './App.css'
 import { Button, Modal } from 'react-bootstrap'
 import Login from './components/Login'
@@ -37,9 +37,17 @@ function App() {
 
     return (
         <StateContext.Provider value={{ state, dispatch }}>
-            <Login />
+            {!state.user && <Login />}
             <div className="App">
-                <h1>TodoList</h1>
+                <h1>
+                    {state.user && (
+                        <span style={{ color: 'aquamarine' }}>
+                            {state.user}
+                        </span>
+                    )}
+                    <br />
+                    TodoList
+                </h1>
                 <div className="operations">
                     <Button onClick={handleShow}>Add New</Button>
                     <Logout />

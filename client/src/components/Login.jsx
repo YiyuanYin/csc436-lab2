@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useContext } from 'react'
+import React, { useCallback, useState, useContext, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { StateContext } from '../contexts';
+import { useResource } from "react-request-hook";
 import './Login.css'
 
 export default function Login() {
@@ -8,13 +9,47 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rPassword, setRPassword] = useState('')
-    const { dispatch } = useContext(StateContext);
+    const [loginFailedMsg, setLoginFailedMsg] = useState('')
+    const { dispatch: dispatchUser } = useContext(StateContext);
+
+    const [loginUser, login] = useResource((dataEmail, dataPassword) => ({
+        url: "/login",
+        method: "post",
+        data: { email: dataEmail, password: dataPassword },
+      }));
+
+    const [registerUser, register] = useResource((dataEmail, dataPassword) => ({
+        url: "/users",
+        method: "post",
+        data: { email: dataEmail, password: dataPassword },
+      }));
 
     const onClickSubmit = useCallback(() => {
-        if (email && password) {
-            dispatch({ type: "LOGIN", email })
+        if (hasAccount) {
+            login(email, password)
+        } else {
+            register(email, password)
         }
-    }, [dispatch, email, password])
+    }, [email, hasAccount, login, password, register])
+
+    useEffect(() => {
+        if (loginUser) {
+            if (loginUser.error) {
+                setLoginFailedMsg(loginUser.error.data)
+            } else if (loginUser.data?.user) {
+                dispatchUser({ type: "LOGIN", email: loginUser.data.user.email });
+                setLoginFailedMsg('')
+            }
+        }
+      }, [loginUser, dispatchUser]);
+
+    useEffect(() => {
+        if (registerUser && registerUser.data) {
+            dispatchUser({ type: "REGISTER", email: registerUser.data.user.email });
+        } else if (registerUser.error) {
+            setLoginFailedMsg(registerUser.error.data)
+        }
+    }, [registerUser, dispatchUser]);
 
     return (
         <div className="login-wrapper">
@@ -26,7 +61,7 @@ export default function Login() {
                     type="text"
                 />
                 <br />
-                <Form.Label htmlFor="inputPassword5">Password</Form.Label>
+                <Form.Label htmlFor="inputPassword5">Password(At least 4 letters)</Form.Label>
                 <Form.Control
                     type="password"
                     id="inputPassword5"
@@ -74,6 +109,7 @@ export default function Login() {
                 >
                     Submit
                 </Button>
+                {loginFailedMsg !== '' ?  <div style={{ color: 'red'}}>{loginFailedMsg}</div> : null}
             </Form>
         </div>
     )

@@ -5,6 +5,10 @@
   /* width: 800px; */
 }
 
+.App h1 {
+  text-align: center;
+}
+
 .operations {
   width: 400px;
   display: flex;
