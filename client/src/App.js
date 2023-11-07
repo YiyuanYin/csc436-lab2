@@ -7,11 +7,12 @@ import Logout from './components/Logout'
 import NewTodoForm from './components/NewTodoForm'
 import { appReducer } from './reducer'
 import { StateContext } from './contexts'
-import { initialToDoLists } from './constant'
+import { useResource } from 'react-request-hook'
+import { useEffect } from 'react'
 
 function App() {
     const [state, dispatch] = useReducer(appReducer, {
-        todoList: initialToDoLists,
+        todoList: [],
         user: '',
     })
     const [show, setShow] = useState(false)
@@ -19,44 +20,44 @@ function App() {
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
-    const handleCreateTodo = (newTodo) => {
-        dispatch({
-            type: 'CREATE_TODO',
-            newTodo,
-        })
-    }
+    const [todoResponse, getTodos] = useResource(() => ({
+        url: '/todos',
+        method: 'get',
+    }))
 
-    const onSubmit = useCallback((newData) => {
-        handleClose()
-        handleCreateTodo(newData)
-    }, [])
+    useEffect(() => {
+        getTodos()
+    }, [getTodos])
+
+    useEffect(() => {
+        if (todoResponse && todoResponse.data) {
+            dispatch({ type: 'FETCH_TODO', todoList: todoResponse.data })
+        }
+    }, [todoResponse])
 
     return (
         <StateContext.Provider value={{ state, dispatch }}>
-            {state.user ? (
-                <div className="App">
-                    <h1>{state.user}'s Todolist</h1>
-                    <div className="operations">
-                        <Button onClick={handleShow}>Add New</Button>
-                        <Logout />
-                    </div>
-                    <div className="todo-list">
-                        {state.todoList.map((item) => (
-                            <TodoItem item={item} key={item.id} />
-                        ))}
-                    </div>
-                    <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add a new Todo</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <NewTodoForm onSubmit={onSubmit} />
-                        </Modal.Body>
-                    </Modal>
+            <Login />
+            <div className="App">
+                <h1>TodoList</h1>
+                <div className="operations">
+                    <Button onClick={handleShow}>Add New</Button>
+                    <Logout />
                 </div>
-            ) : (
-                <Login />
-            )}
+                <div className="todo-list">
+                    {state.todoList.map((item) => (
+                        <TodoItem item={item} key={item.id} />
+                    ))}
+                </div>
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add a new Todo</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <NewTodoForm handleClose={handleClose} />
+                    </Modal.Body>
+                </Modal>
+            </div>
         </StateContext.Provider>
     )
 }

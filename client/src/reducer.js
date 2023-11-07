@@ -24,6 +24,9 @@ function todoReducer(lists, action) {
         case 'CLEAR_TODO': {
             return initialToDoLists
         }
+        case 'FETCH_TODO': {
+            return action.todoList
+        }
         default:
             return lists
     }
