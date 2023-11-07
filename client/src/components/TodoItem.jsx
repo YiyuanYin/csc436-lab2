@@ -29,6 +29,11 @@ function TodoItem(props) {
         data: {...item, complete: !item.complete, dateCompleted: item.complete ? null : new Date() }
       }));
 
+    const [deleteRes, deleteTodo] = useResource( ()=> ({
+        url: `/todos/${item.id}`,
+        method: 'delete',
+    }));
+
 
     useEffect(() => {
         if (todoRes && todoRes.data) {
@@ -40,12 +45,14 @@ function TodoItem(props) {
         }
     }, [dispatch, id, todoRes])
 
-    const handleDeleteTodo = (todoId) => {
-        dispatch({
-            type: 'DELETE_TODO',
-            id: todoId,
-        })
-    }
+    useEffect(() => {
+        if (deleteRes && deleteRes.data) {
+            dispatch({
+                type: 'DELETE_TODO',
+                id,
+            })
+        }
+    }, [dispatch, id, deleteRes])
 
     return (
         <div className="item-wrapper">
@@ -69,7 +76,7 @@ function TodoItem(props) {
                     <div>Completed at: {formatDateString(dateCompleted)}</div>
                 ) : null}
             </div>
-            <Button onClick={() => handleDeleteTodo(id)}>Delete</Button>
+            <Button onClick={deleteTodo}>Delete</Button>
         </div>
     )
 }
