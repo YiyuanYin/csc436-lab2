@@ -21,8 +21,8 @@ function formatDateString(dateStr) {
 
 function TodoItem(props) {
     const { item } = props
-    const { title, description, dateCreated, complete, dateCompleted, id } = item
-    const { state, dispatch } = useContext(StateContext);
+    const { title, description, dateCreated, complete, dateCompleted, id, author } = item
+    const { dispatch } = useContext(StateContext);
     const [todoRes, toggleTodo] = useResource( ()=> ({
         url: `/todos/${item.id}`,
         method: 'put',
@@ -70,7 +70,7 @@ function TodoItem(props) {
             </div>
             <div className="right">
                 <div>
-                    Created by {state.user || 'Default'} at {formatDateString(dateCreated)}
+                    Created {author ? `by ${author}` : ''}  at {formatDateString(dateCreated)}
                 </div>
                 {dateCompleted ? (
                     <div>Completed at: {formatDateString(dateCompleted)}</div>

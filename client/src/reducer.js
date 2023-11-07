@@ -1,5 +1,3 @@
-import { initialToDoLists } from './constant'
-
 function todoReducer(lists, action) {
     switch (action.type) {
         case 'CREATE_TODO': {
@@ -17,9 +15,9 @@ function todoReducer(lists, action) {
         case 'DELETE_TODO': {
             return lists.filter((task) => task.id !== action.id)
         }
-        case 'CLEAR_TODO': {
-            return initialToDoLists
-        }
+        // case 'CLEAR_TODO': {
+        //     return initialToDoLists
+        // }
         case 'FETCH_TODO': {
             return action.todoList
         }

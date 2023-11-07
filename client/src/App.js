@@ -50,7 +50,7 @@ function App() {
                 </h1>
                 <div className="operations">
                     <Button onClick={handleShow}>Add New</Button>
-                    <Logout />
+                    {state.user && <Logout />}
                 </div>
                 <div className="todo-list">
                     {state.todoList.map((item) => (

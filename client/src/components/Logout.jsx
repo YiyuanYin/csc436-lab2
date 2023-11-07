@@ -9,7 +9,7 @@ export default function Logout() {
       dispatch({
         type: 'LOGOUT'
       })
-      dispatch({ type: 'CLEAR_TODO'})
+      // dispatch({ type: 'CLEAR_TODO'})
     }
 
     return (

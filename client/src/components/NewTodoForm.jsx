@@ -6,7 +6,7 @@ import { useResource } from 'react-request-hook';
 export default function NewTodoForm({ handleClose }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('');
-    const { dispatch } = useContext(StateContext);
+    const { state, dispatch } = useContext(StateContext);
 
 
     const [todo, createTodo] = useResource((newTodo) => ({
@@ -16,10 +16,10 @@ export default function NewTodoForm({ handleClose }) {
     }))
 
     const onClickSubmit = useCallback(() => {
-        const newTodo = { title, description, complete: false, dateCreated: new Date() }
+        const newTodo = { title, description, complete: false, dateCreated: new Date(), author: state.user }
         createTodo(newTodo)
         handleClose()
-    }, [createTodo, description, handleClose, title])
+    }, [createTodo, description, handleClose, state.user, title])
 
     useEffect(() => {
         if (todo && todo.data) {
