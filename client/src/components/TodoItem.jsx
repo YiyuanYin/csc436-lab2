@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import { StateContext } from '../contexts';
 import './TodoItem.css'
 import { Button } from 'react-bootstrap';
+import { useResource } from 'react-request-hook';
+import { useEffect } from 'react';
 
 function formatDateString(dateStr) {
     if (!dateStr) {
@@ -18,15 +20,25 @@ function formatDateString(dateStr) {
 }
 
 function TodoItem(props) {
-    const { title, description, dateCreated, complete, dateCompleted, id } = props.item
+    const { item } = props
+    const { title, description, dateCreated, complete, dateCompleted, id } = item
     const { state, dispatch } = useContext(StateContext);
+    const [todoRes, toggleTodo] = useResource( ()=> ({
+        url: `/todos/${item.id}`,
+        method: 'put',
+        data: {...item, complete: !item.complete, dateCompleted: item.complete ? null : new Date() }
+      }));
 
-    const handleToggleTodo = (todoId) => {
-        dispatch({
-            type: 'TOGGLE_TODO',
-            id: todoId,
-        })
-    }
+
+    useEffect(() => {
+        if (todoRes && todoRes.data) {
+            dispatch({
+                type: 'TOGGLE_TODO',
+                id,
+                newTodo: todoRes.data
+            })
+        }
+    }, [dispatch, id, todoRes])
 
     const handleDeleteTodo = (todoId) => {
         dispatch({
@@ -41,7 +53,7 @@ function TodoItem(props) {
                 <input
                     type="checkbox"
                     checked={complete}
-                    onChange={() => handleToggleTodo(id)}
+                    onChange={toggleTodo}
                     className="checkbox"
                 />
                 <div>

@@ -8,11 +8,7 @@ function todoReducer(lists, action) {
         case 'TOGGLE_TODO': {
             return lists.map((task) => {
                 if (task.id === action.id) {
-                    return {
-                        ...task,
-                        complete: !task.complete,
-                        dateCompleted: task.complete ? null : new Date(),
-                    }
+                    return action.newTodo
                 } else {
                     return task
                 }
