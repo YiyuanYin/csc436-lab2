@@ -1,0 +1,113 @@
+{
+  "todos": [
+    {
+      "title": "hahahah",
+      "description": "dsdas",
+      "complete": true,
+      "dateCreated": "2023-11-07T21:47:57.827Z",
+      "id": 1,
+      "dateCompleted": "2023-11-07T22:30:14.090Z"
+    },
+    {
+      "title": "dadsad",
+      "description": "dasdasd",
+      "complete": true,
+      "dateCreated": "2023-11-07T21:48:04.442Z",
+      "id": 2,
+      "dateCompleted": "2023-11-07T22:30:18.095Z"
+    },
+    {
+      "title": "ewqe",
+      "description": "eqweqe",
+      "complete": true,
+      "dateCreated": "2023-11-07T22:26:02.953Z",
+      "id": 3,
+      "dateCompleted": "2023-11-07T22:26:08.522Z"
+    },
+    {
+      "title": "c",
+      "description": "cxzczxc",
+      "complete": false,
+      "dateCreated": "2023-11-07T22:26:18.963Z",
+      "id": 4,
+      "dateCompleted": null
+    },
+    {
+      "title": "fsdf",
+      "description": "fsdfsf",
+      "complete": false,
+      "dateCreated": "2023-11-07T22:28:45.741Z",
+      "author": "",
+      "id": 5,
+      "dateCompleted": null
+    },
+    {
+      "title": "fdsf",
+      "description": "fsdfsdfsf",
+      "complete": true,
+      "dateCreated": "2023-11-07T22:29:23.575Z",
+      "author": "emma@gmail.com",
+      "id": 6,
+      "dateCompleted": "2023-11-07T22:32:44.015Z"
+    },
+    {
+      "title": "ddd",
+      "description": "ddd",
+      "complete": false,
+      "dateCreated": "2023-11-07T22:30:23.665Z",
+      "author": "emma@gmail.com",
+      "id": 7,
+      "dateCompleted": null
+    },
+    {
+      "title": "ddd",
+      "description": "sdsds",
+      "complete": false,
+      "dateCreated": "2023-11-07T22:31:31.477Z",
+      "author": "emma@gmail.com",
+      "id": 8,
+      "dateCompleted": null
+    },
+    {
+      "title": "ddd",
+      "description": "asdasdada",
+      "complete": false,
+      "dateCreated": "2023-11-07T22:32:10.538Z",
+      "author": "emma@gmail.com",
+      "id": 9,
+      "dateCompleted": null
+    }
+  ],
+  "users": [
+    {
+      "email": "emma@gmail.com",
+      "password": "$2a$10$hdQaM6uDoICD/pNyiVRuDO.tLIMRDLgS6j6gGooIDSWanrL2CsXPm",
+      "id": 3
+    },
+    {
+      "email": "de@aa.com",
+      "password": "$2a$10$FFvAhFfPfAlGQCFT1nDEpuKDIH/hDhk6jrYmVBnF6r9gISnUxZ7Gu",
+      "id": 4
+    },
+    {
+      "email": "qqq@dd.com",
+      "password": "$2a$10$cLHIUH0i9S4.Pic/gcYxsORw/s2y1TOjHdIqOeSZPtkVGE0nlJn6O",
+      "id": 5
+    },
+    {
+      "email": "eee@d.com",
+      "password": "$2a$10$sqAZkPlehA3Ad6ZxWmNOrekQm3NaYtW39kn128G6/Z5dkRvvNWMYu",
+      "id": 6
+    },
+    {
+      "email": "w@123.com",
+      "password": "$2a$10$UdyRsfNhh6mibAj4ekUg2u8YeekveKW0GX/GRkju9SJmQILVXY7FG",
+      "id": 7
+    },
+    {
+      "email": "yy@gami.cc",
+      "password": "$2a$10$hXP75U/A6pYjhUEdiEC/heESqDzFDDn6a5PUu/1luwnbVvb9LORCC",
+      "id": 8
+    }
+  ]
+}
