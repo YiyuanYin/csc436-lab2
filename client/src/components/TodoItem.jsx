@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { StateContext } from '../contexts';
 import './TodoItem.css'
 import { Button } from 'react-bootstrap';
-import { useResource } from 'react-request-hook';
 import { useEffect } from 'react';
+import { useAPI } from '../hooks';
 
 function formatDateString(dateStr) {
     if (!dateStr) {
@@ -23,16 +23,8 @@ function TodoItem(props) {
     const { item } = props
     const { title, description, dateCreated, complete, dateCompleted, id, author } = item
     const { dispatch } = useContext(StateContext);
-    const [todoRes, toggleTodo] = useResource( ()=> ({
-        url: `/todos/${item.id}`,
-        method: 'put',
-        data: {...item, complete: !item.complete, dateCompleted: item.complete ? null : new Date() }
-      }));
-
-    const [deleteRes, deleteTodo] = useResource( ()=> ({
-        url: `/todos/${item.id}`,
-        method: 'delete',
-    }));
+    const [todoRes, toggleTodo] = useAPI(`/todo/${item.id}`, 'put');
+    const [deleteRes, deleteTodo] = useAPI(`/todo/${item.id}`, 'put');
 
 
     useEffect(() => {

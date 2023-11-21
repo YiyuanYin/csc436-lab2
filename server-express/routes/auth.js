@@ -21,9 +21,13 @@ router.post("/register", async function(req, res, next) {
     const user = new User({ username, password: req.hashedPassword })
 
     return await user.save().then((savedUser) => {
+      const token = jwt.sign({ id: user._id }, privateKey, {
+        algorithm: "RS256"
+      })
       return res.status(201).json({
         id: savedUser.id,
-        username: savedUser.username
+        username: savedUser.username,
+        access_token: token
       })
     }).catch((err) => res.status(500).json({ error: err.message }))
   } else {
@@ -44,7 +48,7 @@ router.post("/login", async function(req, res, next) {
               algorithm: "RS256"
             })
 
-            return res.status(200).json({ access_token: token })
+            return res.status(200).json({ access_token: token, username })
           } else {
             return res.status(401).json({ error: "Incorrect username or password" })
           }
@@ -53,7 +57,7 @@ router.post("/login", async function(req, res, next) {
           return res.status(500).json({ error: error.message });
         })
     }
-    return res.status(401).json({ error: "Invalid credentials." });
+    return res.status(401).json({ error: "Username doesn't exist" });
   } else {
     res.status(400).json({ error: "Username or Password Missing" });
   }

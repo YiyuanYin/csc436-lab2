@@ -29,9 +29,9 @@ function todoReducer(lists, action) {
 function userReducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
-            return action.email
+            return { username: action.username, access_token: action.access_token }
         case 'REGISTER':
-            return action.email
+            return { username: action.username, access_token: action.access_token }
         case 'LOGOUT':
             return ''
         default:

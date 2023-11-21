@@ -1,25 +1,21 @@
 import React, { useCallback, useState, useContext } from 'react'
 import { StateContext } from '../contexts';
 import { useEffect } from 'react';
-import { useResource } from 'react-request-hook';
+import { useAPI } from '../hooks';
 
 export default function NewTodoForm({ handleClose }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('');
-    const { state, dispatch } = useContext(StateContext);
+    const { dispatch } = useContext(StateContext);
 
 
-    const [todo, createTodo] = useResource((newTodo) => ({
-        url: "/todos",
-        method: 'post',
-        data: newTodo
-    }))
+    const [todo, createTodo] = useAPI("/todo", 'post');
 
     const onClickSubmit = useCallback(() => {
-        const newTodo = { title, description, complete: false, dateCreated: new Date(), author: state.user }
+        const newTodo = { title, description }
         createTodo(newTodo)
         handleClose()
-    }, [createTodo, description, handleClose, state.user, title])
+    }, [createTodo, description, handleClose, title])
 
     useEffect(() => {
         if (todo && todo.data) {

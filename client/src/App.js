@@ -21,8 +21,9 @@ function App() {
     const handleShow = () => setShow(true)
 
     const [todoResponse, getTodos] = useResource(() => ({
-        url: '/todos',
+        url: '/todo',
         method: 'get',
+        headers: { Authorization: `${state?.user?.access_token}` },
     }))
 
     useEffect(() => {
