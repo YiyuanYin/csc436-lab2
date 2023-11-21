@@ -5,9 +5,9 @@ const TodoSchema = new Schema({
   title: {type: String, required: true},
   description: String,
   author: {type: Schema.Types.ObjectId, ref: 'User'},
-  complete: {type: Boolean, required: true },
-  dateCreated: { type: Date },
-  dateCompleted: { type: Date }
+  completed: {type: Boolean, required: true },
+  dateCreated: { type: String },
+  dateCompleted: { type: String }
 })
 
 module.exports = mongoose.model('Todo', TodoSchema)

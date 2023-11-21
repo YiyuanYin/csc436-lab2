@@ -22,7 +22,7 @@ router.use(function(req, res, next) {
 router.post("/", async function(req, res) {
   const { title, description } = req.body
   const todo = new Todo({
-    title, description, author: req.payload.id, dateCreated: Date.now()
+    title, description, author: req.payload.id, dateCreated: Date.now(), completed: false
   })
   todo.save().then(({ _id, title, description, author, dateCreated }) => {
     return res.status(201).json({
@@ -40,3 +40,25 @@ router.get("/", async function(req, res) {
     return res.status(500).json({ error: error.message });
   });
 })
+
+router.delete("/:id", async function(req, res) {
+  Todo.findByIdAndDelete(req.params.id).where("author").equals(req.payload.id).then((todo) => {
+    return res.status(200).json(todo)
+  }).catch((error) => {
+    return res.status(500).json({ error: error.message });
+  })
+})
+
+router.put("/:id", async function(req, res) {
+  const todo = await Todo.findById(req.params.id).where("author").equals(req.payload.id)
+  Todo.findByIdAndUpdate(req.params.id,
+    { $set: { completed: !todo.completed, dateCompleted: todo.completed ? "" : Date.now() }},
+    { new: true }
+  ).then((updated) => {
+    return res.status(200).json(updated)
+  }).catch((error) => {
+    return res.status(500).json({ error: error.message });
+  });
+})
+
+module.exports = router;
