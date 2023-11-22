@@ -1,72 +1,27 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer } from 'react'
 import './App.css'
-import { Button, Modal } from 'react-bootstrap'
-import Login from './components/Login'
-import TodoItem from './components/TodoItem'
-import Logout from './components/Logout'
-import NewTodoForm from './components/NewTodoForm'
+import { Routes, Route } from 'react-router-dom'
 import { appReducer } from './reducer'
 import { StateContext } from './contexts'
-import { useResource } from 'react-request-hook'
-import { useEffect } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { Todos } from './pages/Todos'
+import { Login } from './pages/Login'
+import { Home } from './pages/Home'
 
 function App() {
     const [state, dispatch] = useReducer(appReducer, {
         todoList: [],
-        user: '',
+        user: {},
     })
-    const [show, setShow] = useState(false)
-
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
-
-    const [todoResponse, getTodos] = useResource(() => ({
-        url: '/todo',
-        method: 'get',
-        headers: { Authorization: `${state?.user?.access_token}` },
-    }))
-
-    useEffect(() => {
-        getTodos()
-    }, [getTodos])
-
-    useEffect(() => {
-        if (todoResponse && todoResponse.data) {
-            dispatch({ type: 'FETCH_TODO', todoList: todoResponse.data })
-        }
-    }, [todoResponse])
-
     return (
         <StateContext.Provider value={{ state, dispatch }}>
-            {!state.user && <Login />}
-            <div className="App">
-                <h1>
-                    {state.user && (
-                        <span style={{ color: 'aquamarine' }}>
-                            {state.user}
-                        </span>
-                    )}
-                    <br />
-                    TodoList
-                </h1>
-                <div className="operations">
-                    <Button onClick={handleShow}>Add New</Button>
-                    {state.user && <Logout />}
-                </div>
-                <div className="todo-list">
-                    {state.todoList.map((item) => (
-                        <TodoItem item={item} key={item.id} />
-                    ))}
-                </div>
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add a new Todo</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <NewTodoForm handleClose={handleClose} />
-                    </Modal.Body>
-                </Modal>
-            </div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" exact Component={Home} />
+                    <Route path="/login" Component={Login} />
+                    <Route path="/todos" Component={Todos} />
+                </Routes>
+            </BrowserRouter>
         </StateContext.Provider>
     )
 }

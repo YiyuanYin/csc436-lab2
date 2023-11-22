@@ -1,0 +1,20 @@
+.App {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  /* width: 800px; */
+}
+
+.App h1 {
+  text-align: center;
+}
+
+.operations {
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-list {
+  width: 800px;
+}

@@ -9,7 +9,7 @@ function formatDateString(dateStr) {
     if (!dateStr) {
         return ''
     }
-    const date = new Date(dateStr)
+    const date = new Date(Number(dateStr))
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
@@ -21,38 +21,37 @@ function formatDateString(dateStr) {
 
 function TodoItem(props) {
     const { item } = props
-    const { title, description, dateCreated, complete, dateCompleted, id, author } = item
+    const { title, description, dateCreated, completed, dateCompleted, _id } = item
     const { dispatch } = useContext(StateContext);
-    const [todoRes, toggleTodo] = useAPI(`/todo/${item.id}`, 'put');
-    const [deleteRes, deleteTodo] = useAPI(`/todo/${item.id}`, 'put');
-
+    const [todoRes, toggleTodo] = useAPI(`/todo/${_id}`, 'put');
+    const [deleteRes, deleteTodo] = useAPI(`/todo/${_id}`, 'delete');
 
     useEffect(() => {
         if (todoRes && todoRes.data) {
             dispatch({
                 type: 'TOGGLE_TODO',
-                id,
-                newTodo: todoRes.data
+                id: _id,
+                newTodo: {...todoRes.data, id: todoRes.data._id}
             })
         }
-    }, [dispatch, id, todoRes])
+    }, [dispatch, _id, todoRes])
 
     useEffect(() => {
         if (deleteRes && deleteRes.data) {
             dispatch({
                 type: 'DELETE_TODO',
-                id,
+                id: _id,
             })
         }
-    }, [dispatch, id, deleteRes])
+    }, [dispatch, _id, deleteRes])
 
     return (
         <div className="item-wrapper">
-            <div className="left" data-checked={complete}>
+            <div className="left" data-checked={completed}>
                 <input
                     type="checkbox"
-                    checked={complete}
-                    onChange={toggleTodo}
+                    checked={completed}
+                    onChange={() => toggleTodo()}
                     className="checkbox"
                 />
                 <div>
@@ -62,13 +61,13 @@ function TodoItem(props) {
             </div>
             <div className="right">
                 <div>
-                    Created {author ? `by ${author}` : ''}  at {formatDateString(dateCreated)}
+                    Created at {formatDateString(dateCreated)}
                 </div>
                 {dateCompleted ? (
                     <div>Completed at: {formatDateString(dateCompleted)}</div>
                 ) : null}
             </div>
-            <Button onClick={deleteTodo}>Delete</Button>
+            <Button onClick={() => deleteTodo()}>Delete</Button>
         </div>
     )
 }

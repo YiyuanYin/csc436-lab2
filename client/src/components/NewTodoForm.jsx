@@ -7,9 +7,7 @@ export default function NewTodoForm({ handleClose }) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('');
     const { dispatch } = useContext(StateContext);
-
-
-    const [todo, createTodo] = useAPI("/todo", 'post');
+    const [todo, createTodo] = useAPI("/todo", 'post', {title, description});
 
     const onClickSubmit = useCallback(() => {
         const newTodo = { title, description }

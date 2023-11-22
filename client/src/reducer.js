@@ -5,7 +5,7 @@ function todoReducer(lists, action) {
         }
         case 'TOGGLE_TODO': {
             return lists.map((task) => {
-                if (task.id === action.id) {
+                if (task._id === action.id) {
                     return action.newTodo
                 } else {
                     return task
@@ -13,11 +13,11 @@ function todoReducer(lists, action) {
             })
         }
         case 'DELETE_TODO': {
-            return lists.filter((task) => task.id !== action.id)
+            return lists.filter((task) => task._id !== action.id)
         }
-        // case 'CLEAR_TODO': {
-        //     return initialToDoLists
-        // }
+        case 'CLEAR_TODO': {
+            return []
+        }
         case 'FETCH_TODO': {
             return action.todoList
         }
@@ -29,9 +29,15 @@ function todoReducer(lists, action) {
 function userReducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
-            return { username: action.username, access_token: action.access_token }
+            return {
+                username: action.username,
+                access_token: action.access_token,
+            }
         case 'REGISTER':
-            return { username: action.username, access_token: action.access_token }
+            return {
+                username: action.username,
+                access_token: action.access_token,
+            }
         case 'LOGOUT':
             return ''
         default:
